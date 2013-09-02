@@ -14,14 +14,20 @@ package org.jboss.tools.ui.bot.ext.helper;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.awt.AWTException;
+import java.awt.Robot;
 import java.awt.event.KeyEvent;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.bindings.keys.KeyStroke;
+import org.eclipse.jface.bindings.keys.ParseException;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.keyboard.Keyboard;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
@@ -70,8 +76,15 @@ public class OpenOnHelper {
 		SWTBotEclipseEditor sourceEditor = SWTJBTExt.selectTextInSourcePane(
 				bot, editorTitle, textToSelect, selectionOffset,
 				selectionLength, textToSelectIndex);
+		
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
 
 		bot.sleep(Timing.time3S());
+//		bot.sleep(10000);
 
 		sourceEditor.setFocus();
 		// process UI Events
@@ -83,7 +96,44 @@ public class OpenOnHelper {
 		bot.sleep(Timing.time3S());
 		new SWTUtilExt(bot).waitForNonIgnoredJobs();
 
+		// TODO jakub
 		KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_F3);
+		KeyStroke keyF3 = null;
+		try {
+			keyF3 = KeyStroke.getInstance("F3");
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		new SWTBotEclipseEditor(bot.activeEditor().getReference(), bot).pressShortcut(keyF3);
+		new SWTBotEclipseEditor(bot.activeEditor().getReference(), bot).pressShortcut(keyF3);
+		new SWTBotEclipseEditor(bot.activeEditor().getReference(), bot).pressShortcut(keyF3);
+		new SWTBotEclipseEditor(bot.activeEditor().getReference(), bot).pressShortcut(keyF3);
+		new SWTBotEclipseEditor(bot.activeEditor().getReference(), bot).pressShortcut(keyF3);
+		new SWTBotEclipseEditor(bot.activeEditor().getReference(), bot).pressShortcut(keyF3);
+		new SWTBotEclipseEditor(bot.activeEditor().getReference(), bot).pressShortcut(keyF3);
+		new SWTBotEclipseEditor(bot.activeEditor().getReference(), bot).pressShortcut(keyF3);
+		new SWTBotEclipseEditor(bot.activeEditor().getReference(), bot).pressShortcut(keyF3);
+//		new Keyboard(new awtke)
+		try {
+			Robot robot = new Robot();
+			robot.setAutoDelay(50);
+			robot.keyPress(KeyEvent.VK_F3);
+			robot.keyRelease(KeyEvent.VK_F3);
+			
+//			robot.keyPress(KeyEvent.VK_ALT);
+//			robot.keyPress(KeyEvent.VK_F4);
+//			robot.keyRelease(KeyEvent.VK_F4);
+////			robot.keyPress(KeyEvent.VK_TAB);
+////			robot.keyRelease(KeyEvent.VK_TAB);
+//			robot.keyRelease(KeyEvent.VK_ALT);
+			robot.keyPress(KeyEvent.VK_F3);
+			robot.keyRelease(KeyEvent.VK_F3);
+		} catch (AWTException e) {
+			log.warn("awt robot creation failed", e);
+		}
+		
+
 		// process UI Events
 		UIThreadRunnable.syncExec(new VoidResult() {
 			@Override
