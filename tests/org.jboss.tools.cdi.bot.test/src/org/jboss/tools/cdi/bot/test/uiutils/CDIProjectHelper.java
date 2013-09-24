@@ -185,6 +185,7 @@ public class CDIProjectHelper {
 		bot.waitWhile(new 
 				ProgressInformationShellIsActiveCondition(), 
 				TaskDuration.LONG.getTimeout());
+		new PushButton("OK").click();
 	}
 	
 	/**
