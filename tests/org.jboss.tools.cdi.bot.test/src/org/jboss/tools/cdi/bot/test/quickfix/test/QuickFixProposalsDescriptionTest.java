@@ -11,18 +11,28 @@
 
 package org.jboss.tools.cdi.bot.test.quickfix.test;
 
+import java.awt.AWTException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.jboss.tools.cdi.bot.test.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
+import org.jboss.tools.cdi.bot.test.uiutils.ClickHelper;
 import org.jboss.tools.cdi.bot.test.uiutils.wizards.OpenOnOptionsDialog;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class QuickFixProposalsDescriptionTest extends CDITestBase {
-
+	
+	@BeforeClass
+	public static void beforeClasses() throws AWTException {
+		Shell activeShell = bot.activeShell().widget;
+		ClickHelper.clickOnTitleBar(activeShell);
+	}
+	
 	@Override
 	public String getProjectName() {
 		return "CDIQuickFixProposals";
@@ -31,7 +41,7 @@ public class QuickFixProposalsDescriptionTest extends CDITestBase {
 	@Test
 	public void testAddedCode() {
 		
-		String className = "AddCodeBean.java";
+ 		String className = "AddCodeBean.java";
 		
 		SWTBotEditor editor = packageExplorer.openFile(getProjectName(), CDIConstants.SRC, 
 				getPackageName(), className);

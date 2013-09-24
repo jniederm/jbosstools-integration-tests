@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.seam3.bot.test.tests;
 
+import org.eclipse.swt.widgets.Shell;
+import org.jboss.tools.cdi.bot.test.uiutils.ClickHelper;
 import org.jboss.tools.cdi.seam3.bot.test.base.Seam3TestBase;
 import org.jboss.tools.cdi.seam3.bot.test.util.SeamLibrary;
 import org.jboss.tools.ui.bot.ext.helper.OpenOnHelper;
@@ -30,6 +32,8 @@ public class SeamConfigClassBaseOpenOnTest extends Seam3TestBase {
 
 	@BeforeClass
 	public static void setup() {
+		Shell activeShell = bot.activeShell().widget;
+		ClickHelper.clickOnTitleBar(activeShell);
 		importSeam3ProjectWithLibrary(projectName, SeamLibrary.SOLDER_3_1);
 		disableSourceLookup();
 	}
