@@ -12,6 +12,7 @@
 package org.jboss.tools.ui.bot.ext.helper;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMnemonic;
+
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
@@ -20,7 +21,10 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.ui.PlatformUI;
 import org.hamcrest.Matcher;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.jboss.tools.ui.bot.ext.condition.ActiveShellTitleMatches;
 
 /**
  * Helper to find menu within menu bar
@@ -29,12 +33,31 @@ import org.hamcrest.Matcher;
  */
 public class MenuBarHelper {
   /**
-   * Returns active shell menu bar menu with label menuLabel
+   * Returns active workbench shell menu bar menu with label menuLabel
    * @param menuLabel
    * @return
    */
   public static SWTBotMenu getMenu (final String menuLabel){
-    final Shell activeShell = new SWTBot().activeShell().widget;
+	waitForWorkbenchShellActive();
+    return doGetMenu(menuLabel);
+    
+  }
+
+private static void waitForWorkbenchShellActive() {
+	String mainShellText = UIThreadRunnable.syncExec(new Result<String>() {
+
+		@Override
+		public String run() {
+			return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getText();
+		}
+	});
+	String quotedMainShellText = java.util.regex.Matcher.quoteReplacement(mainShellText);
+	SWTBotExt bot = new SWTBotExt();
+	bot.waitUntil(new ActiveShellTitleMatches(bot, quotedMainShellText) , 5000);
+}
+
+private static SWTBotMenu doGetMenu(final String menuLabel) {
+	final Shell activeShell = new SWTBot().activeShell().widget;
     final MenuItem menuItem = UIThreadRunnable.syncExec(new Result<MenuItem>() {
       @Override
       public MenuItem run() {
@@ -56,6 +79,5 @@ public class MenuBarHelper {
     });
     
     return new SWTBotMenu (menuItem);
-    
-  }    
+}    
 }
